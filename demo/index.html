@@ -46,7 +46,12 @@
     }
     document.getElementById("f").addEventListener("submit", e => {
       e.preventDefault();
-      const v = { name: name.value.trim(), reg: reg.value.trim(), title: title.value.trim(), url: url.value.trim() };
+      const v = {
+      name: document.getElementById("name").value.trim(),
+      reg: document.getElementById("reg").value.trim(),
+      title: document.getElementById("title").value.trim(),
+      url: document.getElementById("url").value.trim()
+    };
       const errs = [];
       if (!v.name) errs.push("Name is required.");
       if (!v.reg) errs.push("Registration number is required.");
