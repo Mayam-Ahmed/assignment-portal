@@ -21,3 +21,4 @@ It installs dependencies, runs pytest, builds a JSON report and POSTs it to the 
 
 ## Self-hosted runner
 GitHub repo -> Settings -> Actions -> Runners -> New self-hosted runner (Windows), then run `run.cmd`.
+Demo run 1: passing pipeline
