@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assignment Submission Portal (Demo)</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:800px;margin:30px auto;padding:0 15px;background:#f4f6f9}
+    h1{color:#1f3a68}
+    form,table{background:#fff;padding:15px;border-radius:8px;width:100%;box-shadow:0 1px 4px #0002}
+    input{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}
+    button{background:#1f3a68;color:#fff;border:0;padding:10px 18px;border-radius:5px;cursor:pointer}
+    .error{background:#fde2e2;color:#b00020;padding:10px;border-radius:5px;margin-bottom:10px}
+    .success{background:#dff5e1;color:#1b6e2d;padding:10px;border-radius:5px;margin-bottom:10px}
+    td,th{border-bottom:1px solid #ddd;padding:8px;text-align:left}
+  </style>
+</head>
+<body>
+  <h1>Assignment Submission Portal (Static Demo)</h1>
+  <div id="msg"></div>
+  <form id="f">
+    <label>Name</label><input id="name">
+    <label>Registration Number</label><input id="reg">
+    <label>Assignment Title</label><input id="title">
+    <label>Submission URL</label><input id="url">
+    <button type="submit">Submit</button>
+  </form>
+  <h2>Saved Submissions</h2>
+  <table id="t"><tr><th>Name</th><th>Reg No</th><th>Title</th><th>URL</th></tr></table>
+
+  <script>
+    let subs = [];
+    try { subs = JSON.parse(localStorage.getItem("subs") || "[]"); } catch (e) {}
+
+    function validUrl(u) {
+      try { const x = new URL(u); return (x.protocol === "http:" || x.protocol === "https:") && x.hostname.includes("."); }
+      catch (e) { return false; }
+    }
+    function render() {
+      const t = document.getElementById("t");
+      t.innerHTML = "<tr><th>Name</th><th>Reg No</th><th>Title</th><th>URL</th></tr>";
+      subs.forEach(s => {
+        const r = t.insertRow();
+        [s.name, s.reg, s.title, s.url].forEach(v => { r.insertCell().textContent = v; });
+      });
+    }
+    document.getElementById("f").addEventListener("submit", e => {
+      e.preventDefault();
+      const v = { name: name.value.trim(), reg: reg.value.trim(), title: title.value.trim(), url: url.value.trim() };
+      const errs = [];
+      if (!v.name) errs.push("Name is required.");
+      if (!v.reg) errs.push("Registration number is required.");
+      if (!v.title) errs.push("Assignment title is required.");
+      if (!v.url) errs.push("Submission URL is required.");
+      else if (!validUrl(v.url)) errs.push("Submission URL is invalid.");
+      const m = document.getElementById("msg");
+      m.innerHTML = "";
+      if (errs.length) {
+        errs.forEach(x => { const d = document.createElement("div"); d.className = "error"; d.textContent = x; m.appendChild(d); });
+        return;
+      }
+      subs.push(v);
+      try { localStorage.setItem("subs", JSON.stringify(subs)); } catch (e) {}
+      m.innerHTML = '<div class="success">Submission saved successfully!</div>';
+      e.target.reset();
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
