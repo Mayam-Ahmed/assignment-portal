@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assignment Submission Portal</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:800px;margin:30px auto;padding:0 15px;background:#f4f6f9}
+    h1{color:#1f3a68}
+    form,table{background:#fff;padding:15px;border-radius:8px;box-shadow:0 1px 4px #0002;width:100%}
+    input{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}
+    button{background:#1f3a68;color:#fff;border:0;padding:10px 18px;border-radius:5px;cursor:pointer}
+    .error{background:#fde2e2;color:#b00020;padding:10px;border-radius:5px;margin-bottom:10px}
+    .success{background:#dff5e1;color:#1b6e2d;padding:10px;border-radius:5px;margin-bottom:10px}
+    td,th{border-bottom:1px solid #ddd;padding:8px;text-align:left}
+  </style>
+</head>
+<body>
+  <h1>Assignment Submission Portal</h1>
+
+  {% if message %}<div class="success">{{ message }}</div>{% endif %}
+  {% for e in errors %}<div class="error">{{ e }}</div>{% endfor %}
+
+  <form method="post">
+    <label>Name</label>
+    <input name="name" value="{{ form.name }}">
+    <label>Registration Number</label>
+    <input name="reg_no" value="{{ form.reg_no }}">
+    <label>Assignment Title</label>
+    <input name="title" value="{{ form.title }}">
+    <label>Submission URL</label>
+    <input name="url" value="{{ form.url }}">
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Saved Submissions</h2>
+  <table>
+    <tr><th>Name</th><th>Reg No</th><th>Title</th><th>URL</th><th>Time</th></tr>
+    {% for s in submissions %}
+    <tr><td>{{ s.name }}</td><td>{{ s.reg_no }}</td><td>{{ s.title }}</td>
+        <td><a href="{{ s.url }}">{{ s.url }}</a></td><td>{{ s.submitted_at }}</td></tr>
+    {% else %}
+    <tr><td colspan="5">No submissions yet.</td></tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
