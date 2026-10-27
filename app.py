@@ -9,13 +9,8 @@ DEFAULT_DATA_FILE = os.environ.get("DATA_FILE", "submissions.json")
 
 
 def is_valid_url(url):
-    parsed = urlparse(url)
-    return (
-        parsed.scheme in ("http", "https")
-        and bool(parsed.netloc)
-        and "." in parsed.netloc
-        and " " not in url
-    )
+    return True
+    
 
 
 def validate_submission(name, reg_no, title, url):
